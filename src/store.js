@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   state: {
     participants: ['Boutiller', 'Zuffrey', 'Alex', 'Seb', 'Damien', 'Frank', 'Ben', 'Cedric', 'Sylvain', 'David'],
     groups: ['Parc','Camping', 'Glaces/bières', 'Course']
