@@ -4,10 +4,12 @@
     <table>
       <tr>
         <th>Participant</th>
-        <th v-for="group in $store.state.groups">{{ group }}</th>
+        <th v-for="g in $store.state.groups">
+          {{ g.name }} <button @click="removeGroup(g.id)">X</button>
+        </th>
       </tr>
-      <tr v-for="(p, index) in $store.state.participants">
-        <td>{{ p }} <button @click="removeParticipant(index)">X</button></td>
+      <tr v-for="p in $store.state.participants">
+        <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
         <th v-for="g in $store.state.groups">
           <input class="amount" />
         </th>
