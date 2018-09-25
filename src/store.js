@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    participants: ['Boutiller', 'Zuffrey', 'Alex', 'Seb', 'Damien', 'Frank', 'Ben', 'Cedric', 'Sylvain', 'David']
+    participants: ['Boutiller', 'Zuffrey', 'Alex', 'Seb', 'Damien', 'Frank', 'Ben', 'Cedric', 'Sylvain', 'David'],
+    groups: ['Parc','Camping', 'Glaces/bières', 'Course']
   },
   mutations: {
     addParticipant (state, name) {
@@ -13,6 +14,12 @@ export default new Vuex.Store({
     },
     removeParticipant(state, position) {
       state.participants.splice(position, 1);
+    },
+    addGroup (state, name) {
+      state.groups.push(name);
+    },
+    removeGroup(state, position) {
+      state.group.splice(position, 1);
     }
   },
   actions: {
@@ -21,6 +28,12 @@ export default new Vuex.Store({
     },
     removeParticipant(context, position) {
       context.commit('removeParticipant', position);
+    },
+    addGroup(context, name) {
+        context.commit('addGroup', name);
+    },
+    removeGroup(context, position) {
+        context.commit('removeGroup', position);
     }
   }
 })
