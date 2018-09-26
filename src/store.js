@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -16,6 +16,9 @@ export default new Vuex.Store({
       1: {id: 1, name: 'Achats'},
       2: {id: 2, name: 'Hotels'},
       3: {id: 3, name: 'Avions'}
+    },
+    expenses: {
+      1: {id: 1, amount: 23.5, participant: 2, group: 2}
     }
   },
   mutations: {
@@ -32,7 +35,14 @@ export default new Vuex.Store({
     },
     removeGroup(state, id) {
       Vue.delete(state.groups, id);
-    }
+    },
+    addExpense (state, params) {
+      const newId = Math.max(...Object.keys(state.expenses)) + 1;
+      state.expenses[newId] = {id: newId, amount: params.amount, participant: params.participant, group: params.group, name: params.name};
+    },
+    removeExpense(state, id) {
+      Vue.delete(state.expenses, id);
+    },
   },
   actions: {
     addParticipant(context, name) {
@@ -42,10 +52,16 @@ export default new Vuex.Store({
       context.commit('removeParticipant', id);
     },
     addGroup(context, name) {
-        context.commit('addGroup', name);
+      context.commit('addGroup', name);
     },
     removeGroup(context, id) {
-        context.commit('removeGroup', id);
-    }
+      context.commit('removeGroup', id);
+    },
+    addExpense(context, params){
+      context.commit('addExpense', params);
+    },
+    removeExpense(context, id) {
+      context.commit('removeExpense', id);
+    },
   }
 })
