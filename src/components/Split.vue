@@ -11,9 +11,9 @@
       </tr>
       <tr v-for="p in $store.state.participants">
         <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
-        <th v-for="g in $store.state.groups">
-          {{ expensesSum(p.id, g.id) }}
-        </th>
+        <td v-for="g in $store.state.groups">
+          {{ expensesSum(p.id, g.id) }} CHF
+        </td>
       </tr>
     </table>
     <label for="newParticipantInput">New participant:</label>
