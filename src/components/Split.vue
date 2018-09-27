@@ -1,6 +1,7 @@
 <template>
   <div class="split">
     <h1>Split</h1>
+
     <h2>Expenses matrix</h2>
     <table>
       <tr>
@@ -8,12 +9,23 @@
         <th v-for="g in $store.state.groups">
           {{ g.name }} <button @click="removeGroup(g.id)">X</button>
         </th>
+        <th>Total paid</th>
+        <th>Personal part</th>
+        <th>Balance</th>
       </tr>
       <tr v-for="p in $store.state.participants">
         <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
         <td v-for="g in $store.state.groups">
           {{ expensesSum(p.id, g.id) }} CHF
         </td>
+        <td>{{ expensesSum(p.id, null) }} CHF</td>
+        <td>{{ expensesSum(null, null) / Object.keys($store.state.participants).length }} CHF</td>
+        <td>{{ (expensesSum(null, null) / Object.keys($store.state.participants).length) - expensesSum(p.id, null) }} CHF</td>
+      </tr>
+      <tr>
+        <th>Total per group</th>
+        <th v-for="g in $store.state.groups">{{ expensesSum(null, g.id) }} CHF</th>
+        <th>{{ expensesSum(null, null) }} CHF</th>
       </tr>
     </table>
     <label for="newParticipantInput">New participant:</label>
@@ -43,6 +55,9 @@
         <button>Insert</button>
       </form>
     </div>
+
+    <h2>Refunds</h2>
+    TO BE IMPLEMENTED
 
   </div>
 </template>
@@ -91,7 +106,7 @@ export default {
     },
     expensesSum(participantId, groupId) {
       return Object.values(this.$store.state.expenses).reduce(function (sum, expense) {
-        if (expense.group == groupId && expense.participant == participantId) {
+        if ((groupId== null || expense.group == groupId) && (participantId==null || expense.participant == participantId)) {
           sum += expense.amount;
         }
         return sum;
