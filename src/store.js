@@ -28,6 +28,11 @@ export default new Vuex.Store({
     },
     removeParticipant(state, id) {
       Vue.delete(state.participants, id);
+      Object.values(state.expenses).forEach(function(e){
+        if (e.participant.id == id) {
+            Vue.delete(state.expenses, e.id);
+        }
+      });
     },
     addGroup (state, name) {
       const newId = Math.max(...Object.keys(state.groups)) + 1;
@@ -35,6 +40,11 @@ export default new Vuex.Store({
     },
     removeGroup(state, id) {
       Vue.delete(state.groups, id);
+      Object.values(state.expenses).forEach(function(e){
+          if (e.group.id == id) {
+              Vue.delete(state.expenses, e.id);
+          }
+      });
     },
     addExpense (state, params) {
       const newId = Math.max(...Object.keys(state.expenses)) + 1;
