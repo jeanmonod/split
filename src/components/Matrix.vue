@@ -4,26 +4,25 @@
     <table>
       <tr>
         <th>Participant</th>
-        <!-- Check Vuex getter to avoid direct access to the store -->
-        <th v-for="g in $store.state.groups">
+        <th v-for="g in getGroups">
           {{ g.name }} <button @click="removeGroup(g.id)">X</button>
         </th>
         <th>Total paid</th>
         <th>Personal part</th>
         <th>Balance</th>
       </tr>
-      <tr v-for="p in $store.state.participants">
+      <tr v-for="p in getParticipants">
         <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
-        <td v-for="g in $store.state.groups">
+        <td v-for="g in getGroups">
           {{ expensesSum(p.id, g.id) }} CHF
         </td>
         <td>{{ expensesSum(p.id, null) }} CHF</td>
-        <td>{{ expensesSum(null, null) / Object.keys($store.state.participants).length }} CHF</td>
-        <td>{{ (expensesSum(null, null) / Object.keys($store.state.participants).length) - expensesSum(p.id, null) }} CHF</td>
+        <td>{{ expensesSum(null, null) / Object.keys(getParticipants).length }} CHF</td>
+        <td>{{ (expensesSum(null, null) / Object.keys(getParticipants).length) - expensesSum(p.id, null) }} CHF</td>
       </tr>
       <tr>
         <th>Total per group</th>
-        <th v-for="g in $store.state.groups">{{ expensesSum(null, g.id) }} CHF</th>
+        <th v-for="g in getGroups">{{ expensesSum(null, g.id) }} CHF</th>
         <th>{{ expensesSum(null, null) }} CHF</th>
       </tr>
     </table>
@@ -36,6 +35,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Split',
   data: function () {
@@ -43,6 +44,9 @@ export default {
       newParticipantName: '',
       newGroupName: ''
     }
+  },
+  computed: {
+    ...mapGetters(['getGroups', 'getGroup', 'getParticipants', 'getParticipant'])
   },
   methods: {
     addParticipant() {

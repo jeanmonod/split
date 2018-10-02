@@ -27,24 +27,24 @@ export default new Vuex.Store({
       Vue.set(state.participants, newId, {id: newId, name: name});
     },
     removeParticipant(state, id) {
-      Vue.delete(state.participants, id);
       Object.values(state.expenses).forEach(function(e){
         if (e.participant.id == id) {
             Vue.delete(state.expenses, e.id);
         }
       });
+      Vue.delete(state.participants, id);
     },
     addGroup (state, name) {
       const newId = Math.max(...Object.keys(state.groups)) + 1;
         Vue.set(state.groups, newId, {id: newId, name: name});
     },
     removeGroup(state, id) {
-      Vue.delete(state.groups, id);
       Object.values(state.expenses).forEach(function(e){
           if (e.group.id == id) {
               Vue.delete(state.expenses, e.id);
           }
       });
+      Vue.delete(state.groups, id);
     },
     addExpense (state, params) {
       const newId = Math.max(...Object.keys(state.expenses)) + 1;
@@ -73,5 +73,12 @@ export default new Vuex.Store({
     removeExpense(context, id) {
       context.commit('removeExpense', id);
     },
+  },
+  getters: {
+    getParticipants: (state) => state.participants,
+    getParticipant: (state) => (id) => state.participants[id],
+    getGroups: (state) => state.groups,
+    getGroup: (state) => (id) => state.groups[id],
+    getExpenses: (state) => state.expenses
   }
 })
