@@ -46,10 +46,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getGroups', 'getGroup', 'getParticipants', 'getParticipant'])
+    ...mapGetters(['getGroups', 'getGroup', 'getParticipants', 'getParticipant', 'expensesSum'])
   },
   methods: {
-    addParticipant() {
+    addParticipant(newParticipantName) {
       if (this.newParticipantName.length > 0) {
         this.$store.dispatch('addParticipant', this.newParticipantName);
       }
@@ -66,14 +66,6 @@ export default {
     },
     removeGroup(position) {
       this.$store.dispatch('removeGroup', position);
-    },
-    expensesSum(participantId, groupId) {
-      return Object.values(this.$store.state.expenses).reduce(function (sum, expense) {
-        if ((groupId== null || expense.group == groupId) && (participantId==null || expense.participant == participantId)) {
-          sum += expense.amount;
-        }
-        return sum;
-      }, 0);
     },
   },
 }

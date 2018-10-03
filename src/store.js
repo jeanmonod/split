@@ -79,6 +79,14 @@ export default new Vuex.Store({
     getParticipant: (state) => (id) => state.participants[id],
     getGroups: (state) => state.groups,
     getGroup: (state) => (id) => state.groups[id],
-    getExpenses: (state) => state.expenses
+    getExpenses: (state) => state.expenses,
+    expensesSum: (state) => (participantId, groupId) => {
+      return Object.values(state.expenses).reduce(function (sum, expense) {
+        if ((groupId==null || expense.group==groupId) && (participantId==null || expense.participant==participantId)) {
+          sum += expense.amount;
+        }
+        return sum;
+      }, 0);
+    },
   }
 })
