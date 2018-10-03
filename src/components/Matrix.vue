@@ -4,25 +4,25 @@
     <table>
       <tr>
         <th>Participant</th>
-        <th v-for="g in getGroups">
+        <th v-for="g in groups">
           {{ g.name }} <button @click="removeGroup(g.id)">X</button>
         </th>
         <th>Total paid</th>
         <th>Personal part</th>
         <th>Balance</th>
       </tr>
-      <tr v-for="p in getParticipants">
+      <tr v-for="p in participants">
         <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
-        <td v-for="g in getGroups">
+        <td v-for="g in groups">
           {{ expensesSum(p.id, g.id) | CHF }}
         </td>
         <td>{{ expensesSum(p.id, null) | CHF }}</td>
-        <td>{{ expensesSum(null, null) / Object.keys(getParticipants).length | CHF }}</td>
-        <td>{{ (expensesSum(null, null) / Object.keys(getParticipants).length) - expensesSum(p.id, null) | CHF }}</td>
+        <td>{{ expensesSum(null, null) / Object.keys(participants).length | CHF }}</td>
+        <td>{{ (expensesSum(null, null) / Object.keys(participants).length) - expensesSum(p.id, null) | CHF }}</td>
       </tr>
       <tr>
         <th>Total per group</th>
-        <th v-for="g in getGroups">{{ expensesSum(null, g.id) | CHF }} CHF</th>
+        <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }} CHF</th>
         <th>{{ expensesSum(null, null) | CHF }}</th>
       </tr>
     </table>
@@ -46,7 +46,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getGroups', 'getGroup', 'getParticipants', 'getParticipant', 'expensesSum'])
+    ...mapGetters({
+        groups: 'getGroups',
+        participants: 'getParticipants',
+        expensesSum: 'expensesSum',
+    })
   },
   methods: {
     addParticipant(newParticipantName) {

@@ -18,7 +18,7 @@ export default new Vuex.Store({
       3: {id: 3, name: 'Avions'}
     },
     expenses: {
-      1: {id: 1, amount: 23.5, participant: 2, group: 2}
+      1: {id: 1, amount: 23.5, participant: 2, group: 2, name: 'Facture booking.com'}
     }
   },
   mutations: {
@@ -28,11 +28,11 @@ export default new Vuex.Store({
     },
     removeParticipant(state, id) {
       Object.values(state.expenses).forEach(function(e){
-        if (e.participant.id == id) {
-            Vue.delete(state.expenses, e.id);
-        }
-      });
-      Vue.delete(state.participants, id);
+            if (e.participant.id == id) {
+                Vue.delete(state.expenses, e.id);
+            }
+        });
+        Vue.delete(state.participants, id);
     },
     addGroup (state, name) {
       const newId = Math.max(...Object.keys(state.groups)) + 1;
