@@ -4,13 +4,13 @@
     <div class="expenses">
       <ul>
         <li v-for="e in getExpenses">
-          {{ getParticipant(e.participant).name }} for {{ getGroup(e.group).name }} {{ e.name }}: {{ e.amount }} CHF
+          {{ getParticipant(e.participant).name }} for {{ getGroup(e.group).name }} "{{ e.name }}": {{ e.amount | CHF}}
           <button @click="removeExpense(e.id)">X</button>
         </li>
       </ul>
       <form @submit.prevent="createNewExpense()">
         <label for="newGroupInput">New expense:</label>
-        <input id="newGroupInput" v-model.number="newExpenseForm.amount" type="number" style="width:40px;" required>CHF
+        <input id="newGroupInput" v-model.number="newExpenseForm.amount" type="number" step=0.01 style="width:40px;" required>CHF
         <select v-model="newExpenseForm.participant" required>
           <option v-for="p in getParticipants" :value="p.id">{{ p.name }}</option>
         </select>

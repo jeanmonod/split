@@ -14,16 +14,16 @@
       <tr v-for="p in getParticipants">
         <td>{{ p.name }} <button @click="removeParticipant(p.id)">X</button></td>
         <td v-for="g in getGroups">
-          {{ expensesSum(p.id, g.id) }} CHF
+          {{ expensesSum(p.id, g.id) | CHF }}
         </td>
-        <td>{{ expensesSum(p.id, null) }} CHF</td>
-        <td>{{ expensesSum(null, null) / Object.keys(getParticipants).length }} CHF</td>
-        <td>{{ (expensesSum(null, null) / Object.keys(getParticipants).length) - expensesSum(p.id, null) }} CHF</td>
+        <td>{{ expensesSum(p.id, null) | CHF }}</td>
+        <td>{{ expensesSum(null, null) / Object.keys(getParticipants).length | CHF }}</td>
+        <td>{{ (expensesSum(null, null) / Object.keys(getParticipants).length) - expensesSum(p.id, null) | CHF }}</td>
       </tr>
       <tr>
         <th>Total per group</th>
-        <th v-for="g in getGroups">{{ expensesSum(null, g.id) }} CHF</th>
-        <th>{{ expensesSum(null, null) }} CHF</th>
+        <th v-for="g in getGroups">{{ expensesSum(null, g.id) | CHF }} CHF</th>
+        <th>{{ expensesSum(null, null) | CHF }}</th>
       </tr>
     </table>
     <label for="newParticipantInput">New participant:</label>
