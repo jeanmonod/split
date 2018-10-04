@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapState} from 'vuex'
 
   export default {
     name: 'Expenses',
@@ -41,12 +41,10 @@
     },
     computed: {
       ...mapGetters({
-        expenses: 'getExpenses',
-        groups: 'getGroups',
         getGroup: 'getGroup',
-        participants: 'getParticipants',
         getParticipant: 'getParticipant'
-      })
+      }),
+      ...mapState(['groups', 'participants', 'expenses']),
     },
     methods: {
       createNewExpense() {

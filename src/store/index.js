@@ -28,11 +28,8 @@ export default new Vuex.Store({
   mutations: mutations,
   actions: actions,
   getters: {
-    getParticipants: (state) => state.participants,
     getParticipant: (state) => (id) => state.participants[id],
-    getGroups: (state) => state.groups,
     getGroup: (state) => (id) => state.groups[id],
-    getExpenses: (state) => state.expenses,
     expensesSum: (state) => (participantId, groupId) => {
       return Object.values(state.expenses).reduce(function (sum, expense) {
         if ((groupId == null || expense.group == groupId) && (participantId == null || expense.participant == participantId)) {
@@ -41,5 +38,10 @@ export default new Vuex.Store({
         return sum;
       }, 0);
     },
+    expensesGrandTotal: (state, getters) => getters.expensesSum(null, null),
+    getParticipantPart: (state, getters) => (id) => getters.expensesGrandTotal / Object.keys(state.participants).length,
+    getParticipantBalance: (state, getters) => (id) => getters.getParticipantPart(id) - getters.expensesSum(id, null),
+    sumBalances: (state, getters) => Object.keys(state.participants).reduce((sum, pid) => sum + getters.getParticipantBalance(pid), 0),
+    sumParts: (state, getters) => Object.keys(state.participants).reduce((sum, pid) => sum + getters.getParticipantPart(pid), 0)
   }
 })

@@ -20,14 +20,16 @@
                     {{ expensesSum(p.id, g.id) | CHF }}
                 </td>
                 <td>{{ expensesSum(p.id, null) | CHF }}</td>
-                <td>{{ expensesSum(null, null) / Object.keys(participants).length | CHF }}</td>
-                <td>{{ (expensesSum(null, null) / Object.keys(participants).length) - expensesSum(p.id, null) | CHF }}
+                <td>{{ getParticipantPart(p.id) | CHF }}</td>
+                <td>{{ getParticipantBalance(p.id) | CHF }}
                 </td>
             </tr>
             <tr>
                 <th>Total per group</th>
-                <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }} CHF</th>
-                <th>{{ expensesSum(null, null) | CHF }}</th>
+                <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }}</th>
+                <th>{{ expensesGrandTotal | CHF }}</th>
+                <th>{{ sumParts | CHF }}</th>
+                <th>{{ sumBalances }} CHF</th>
             </tr>
         </table>
         <label for="newParticipantInput">New participant:</label>
@@ -40,7 +42,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapState} from 'vuex'
 
   export default {
     name: 'Split',
@@ -52,10 +54,14 @@
     },
     computed: {
       ...mapGetters({
-        groups: 'getGroups',
-        participants: 'getParticipants',
         expensesSum: 'expensesSum',
-      })
+        getParticipantPart: 'getParticipantPart',
+        getParticipantBalance: 'getParticipantBalance',
+        expensesGrandTotal: 'expensesGrandTotal',
+        sumParts: 'sumParts',
+        sumBalances: 'sumBalances'
+      }),
+      ...mapState(['groups', 'participants']),
     },
     methods: {
       addParticipant(newParticipantName) {
