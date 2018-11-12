@@ -20,9 +20,19 @@ const testState = {
 };
 
 const {removeGroup} = mutations;
-describe('Group management', () => {
-  it('Remove related expenses when I remove a group', () => {
-    removeGroup(testState, 2);
-    expect(Object.keys(testState.expenses).length).equal(1)
+
+describe('Group removal', () => {
+  it('remove the groups from the state', () => {
+    const s = JSON.parse(JSON.stringify(testState));
+    removeGroup(s, 2);
+    removeGroup(s, 1);
+    expect(s.groups).to.deep.equal({3: {id: 3, name: 'Avions'}})
+  });
+  it('remove related expenses', () => {
+    const s = JSON.parse(JSON.stringify(testState));
+    removeGroup(s, 2);
+    expect(s.expenses).to.deep.equal({2: testState.expenses[2]});
   })
-})
+});
+
+

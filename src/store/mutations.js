@@ -2,14 +2,13 @@ import Vue from 'vue';
 
 const mutations = {
 
-
   addParticipant(state, name) {
     const newId = Math.max(...Object.keys(state.participants)) + 1;
     Vue.set(state.participants, newId, {id: newId, name: name});
   },
   removeParticipant(state, id) {
     Object.values(state.expenses).forEach(function (e) {
-      if (e.participant == id) {
+      if (e.participant === id) {
         Vue.delete(state.expenses, e.id);
       }
     });
@@ -23,7 +22,7 @@ const mutations = {
   },
   removeGroup(state, id) {
     Object.values(state.expenses).forEach(function (e) {
-      if (e.group == id) {
+      if (e.group === id) {
         Vue.delete(state.expenses, e.id);
       }
     });
