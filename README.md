@@ -1,4 +1,4 @@
-# Split
+# Split [![Build Status](https://travis-ci.com/jeanmonod/split.svg?branch=master)](https://travis-ci.com/jeanmonod/split)
 
 ## Project setup
 ```
