@@ -28,7 +28,6 @@
   import {mapGetters, mapState} from 'vuex'
 
   export default {
-    name: 'Expenses',
     data: function () {
       return {
         newExpenseForm: {

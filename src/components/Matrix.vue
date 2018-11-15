@@ -29,7 +29,7 @@
                 <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }}</th>
                 <th>{{ expensesGrandTotal | CHF }}</th>
                 <th>{{ sumParts | CHF }}</th>
-                <th>{{ sumBalances }} CHF</th>
+                <th>{{ sumBalances }} CHF <pre>TODO fix this! should be at 0</pre></th>
             </tr>
         </table>
         <label for="newParticipantInput">New participant:</label>
@@ -45,7 +45,6 @@
   import {mapGetters, mapState} from 'vuex'
 
   export default {
-    name: 'Split',
     data: function () {
       return {
         newParticipantName: '',
@@ -64,7 +63,7 @@
       ...mapState(['groups', 'participants']),
     },
     methods: {
-      addParticipant(newParticipantName) {
+      addParticipant() {
         if (this.newParticipantName.length > 0) {
           this.$store.dispatch('addParticipant', this.newParticipantName);
         }
