@@ -29,7 +29,7 @@
                 <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }}</th>
                 <th>{{ expensesGrandTotal | CHF }}</th>
                 <th>{{ sumParts | CHF }}</th>
-                <th>{{ sumBalances }} CHF <pre>TODO fix this! should be at 0</pre></th>
+                <th>{{ sumBalances | CHF }} CHF</th>
             </tr>
         </table>
         <label for="newParticipantInput">New participant:</label>
