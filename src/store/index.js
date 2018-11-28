@@ -21,6 +21,11 @@ const initialState = {
     1: {id: 1, amount: 230.5, participant: 2, group: 2, name: 'Facture booking.com'},
     2: {id: 2, amount: 17.90, participant: 4, group: 1, name: 'Bières à l\'aéroport'},
     3: {id: 3, amount: 109.0, participant: 2, group: 2, name: 'Hôtel nuit supplémentaire'}
+  },
+  refunds: {
+    resolver: null,
+    balances: {},
+    transactions: {}
   }
 };
 
@@ -34,7 +39,7 @@ export default new Vuex.Store({
     getGroup: (state) => (id) => state.groups[id],
     expensesSum: (state) => (participantId, groupId) => {
       return Object.values(state.expenses).reduce(function (sum, expense) {
-        if ((groupId == null || expense.group === groupId) && (participantId == null || expense.participant === participantId)) {
+        if ((groupId == null || expense.group == groupId) && (participantId == null || expense.participant == participantId)) {
           sum += expense.amount;
         }
         return sum;
@@ -45,5 +50,6 @@ export default new Vuex.Store({
     sumParts: (state, getters) => Object.keys(state.participants).reduce((sum, pid) => sum + getters.getParticipantPart(pid), 0),
     getParticipantBalance: (state, getters) => (id) => getters.getParticipantPart(id) - getters.expensesSum(id, null),
     sumBalances: (state, getters) => Object.keys(state.participants).reduce((sum, pid) => sum + getters.getParticipantBalance(pid), 0),
+    absoluteRefundBalances: (state) => Object.values(state.refunds.balances).reduce((sum, bal) => sum + Math.abs(bal), 0)
   }
 })

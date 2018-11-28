@@ -1,9 +1,13 @@
 import Vue from 'vue';
 
+function nextId(object) {
+  return Math.max(0, ...Object.keys(object)) + 1;
+}
+
 const mutations = {
 
   addParticipant(state, name) {
-    const newId = Math.max(...Object.keys(state.participants)) + 1;
+    const newId = nextId(state.participants);
     Vue.set(state.participants, newId, {id: newId, name: name});
   },
   removeParticipant(state, id) {
@@ -17,7 +21,7 @@ const mutations = {
 
 
   addGroup(state, name) {
-    const newId = Math.max(...Object.keys(state.groups)) + 1;
+    const newId = nextId(state.groups);
     Vue.set(state.groups, newId, {id: newId, name: name});
   },
   removeGroup(state, id) {
@@ -31,7 +35,7 @@ const mutations = {
 
 
   addExpense(state, params) {
-    const newId = Math.max(...Object.keys(state.expenses)) + 1;
+    const newId = nextId(state.expenses);
     Vue.set(state.expenses, newId, {
       id: newId,
       amount: params.amount,
@@ -43,6 +47,26 @@ const mutations = {
   removeExpense(state, id) {
     Vue.delete(state.expenses, id);
   },
+
+
+  initBalances(state, balances) {
+    state.refunds = {
+      balances: balances,
+      transactions: {}
+    }
+  },
+  addTransaction(state, transation) {
+    const newId = nextId(state.refunds.transactions);
+    Vue.set(state.refunds.transactions, newId, {id: newId, ...transation});
+    Vue.set(state.refunds.balances, transation.from, state.refunds.balances[transation.from]-transation.amount);
+    Vue.set(state.refunds.balances, transation.to, state.refunds.balances[transation.to]+transation.amount);
+  },
+  addResolver(state, resolver) {
+    Vue.set(state.refunds, 'resolver', resolver);
+  },
+  clearResolver(state) {
+    Vue.set(state.refunds, 'resolver', null);
+  }
 
 };
 
