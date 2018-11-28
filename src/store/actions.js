@@ -1,3 +1,5 @@
+import {encodeDataForURI} from '../../src/persistance';
+
 function getBestTransaction(balances) {
   const richest = Object.keys(balances).reduce((a, b) => balances[a] > balances[b] ? a : b);
   const poorest = Object.keys(balances).reduce((a, b) => balances[a] < balances[b] ? a : b);
@@ -6,24 +8,28 @@ function getBestTransaction(balances) {
 }
 
 const actions = {
+
   addParticipant(context, name) {
     context.commit('addParticipant', name);
   },
   removeParticipant(context, id) {
     context.commit('removeParticipant', id);
   },
+
   addGroup(context, name) {
     context.commit('addGroup', name);
   },
   removeGroup(context, id) {
     context.commit('removeGroup', id);
   },
+
   addExpense(context, params) {
     context.commit('addExpense', params);
   },
   removeExpense(context, id) {
     context.commit('removeExpense', id);
   },
+
   startResolver(context) {
     let balances = {};
     Object.keys(context.state.participants).forEach(function (id) {
@@ -41,6 +47,15 @@ const actions = {
   stopResolver(context) {
     clearTimeout(context.state.refunds.resolver);
     context.commit('clearResolver');
+  },
+
+  persistData(context) {
+    const qs = encodeDataForURI(context.state.version, {
+      participants: context.state.participants,
+      groups: context.state.groups,
+      expenses: context.state.expenses
+    });
+    context.commit('updateQueryString', qs);
   }
 };
 

@@ -66,6 +66,11 @@ const mutations = {
   },
   clearResolver(state) {
     Vue.set(state.refunds, 'resolver', null);
+  },
+
+
+  updateQueryString(state, qs) {
+    Vue.set(state, 'queryString', qs);
   }
 
 };

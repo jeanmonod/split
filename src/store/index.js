@@ -2,10 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations.js'
 import actions from './actions.js'
+import {getQueryStringParams, mergeDefaultAndQS} from '../../src/persistance';
+
 
 Vue.use(Vuex);
 
-const initialState = {
+let initialState = {
+  version: 0.1,
+  queryString: null,
   participants: {
     1: {id: 1, name: 'Ben'},
     2: {id: 2, name: 'Cédric'},
@@ -28,6 +32,12 @@ const initialState = {
     transactions: {}
   }
 };
+
+const params = getQueryStringParams();
+let data = params['data'];
+if (data) {
+  initialState = mergeDefaultAndQS(initialState, params['data']);
+}
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
