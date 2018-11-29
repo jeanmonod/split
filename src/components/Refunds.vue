@@ -6,7 +6,7 @@
         <h3>Needed transactions</h3>
         <ul>
             <li v-for="r in refunds.transactions">
-                From {{ getParticipant(r.from).name }} to {{ getParticipant(r.to).name }}: {{ r.amount | CHF}}
+                {{ r.id }}) From {{ getParticipant(r.from).name }} to {{ getParticipant(r.to).name }}: {{ r.amount | CHF}}
             </li>
         </ul>
         <h3>Final balances</h3>
