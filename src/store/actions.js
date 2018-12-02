@@ -30,7 +30,7 @@ const actions = {
     context.commit('removeExpense', id);
   },
 
-  startResolver(context) {
+  startResolver(context, timeout) {
     let balances = {};
     Object.keys(context.state.participants).forEach(function (id) {
       balances[id] = context.getters.getParticipantBalance(id);
@@ -38,10 +38,10 @@ const actions = {
     context.commit('initBalances', balances);
     const resolver = setInterval(function() {
       context.commit('addTransaction', getBestTransaction(context.state.refunds.balances));
-      if (context.getters.absoluteRefundBalances < 10) {
+      if (context.getters.absoluteRefundBalances < 2) { // TODO Allow to configure this value
         context.dispatch('stopResolver');
       }
-    }, 1000);
+    }, timeout);
     context.commit('addResolver', resolver);
   },
   stopResolver(context) {

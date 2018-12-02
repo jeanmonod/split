@@ -1,8 +1,9 @@
 <template>
     <div>
-        <h2>Refunds ({{absoluteRefundBalances}})</h2>
+        <h2>Refunds</h2>
         <button v-if="refunds.resolver == null" @click="solveBalances()">Settle balances</button>
         <button v-if="refunds.resolver != null" @click="stopResolver()">Stop resolution</button>
+        <small v-if="refunds.resolver != null">To be transfer: {{absoluteRefundBalances | CHF}}</small>
         <h3>Needed transactions</h3>
         <ul>
             <li v-for="r in refunds.transactions">
@@ -24,7 +25,7 @@
   export default {
     methods: {
       solveBalances() {
-        this.$store.dispatch('startResolver');
+        this.$store.dispatch('startResolver', 200);
       },
       stopResolver() {
         this.$store.dispatch('stopResolver');
