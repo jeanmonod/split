@@ -4,10 +4,14 @@
         <table>
             <tr>
                 <th>Participant</th>
-                <th v-for="g in groups">
-                    {{ g.name }}
-                    <button @click="removeGroup(g.id)">X</button>
-                </th>
+                <template v-for="g in groups">
+                    <th>
+                        {{ g.name }}
+                        <button @click="removeGroup(g.id)">X</button>
+                        <button @click="togglePartialGroup(g.id)">%</button>
+                    </th>
+                    <th v-if="g.partial">{{ g.name }} %</th>
+                </template>
                 <th>Total paid</th>
                 <th>Personal part</th>
                 <th>Balance</th>
@@ -16,19 +20,30 @@
                 <td>{{ p.name }}
                     <button @click="removeParticipant(p.id)">X</button>
                 </td>
-                <td v-for="g in groups">
-                    {{ expensesSum(p.id, g.id) | CHF }}
-                </td>
+                <template v-for="g in groups">
+                    <td>{{ expensesSum(p.id, g.id) | CHF }}</td>
+                    <td v-if="g.partial">
+                        <input v-if="g.partial" class="partial-input"
+                            :placeholder="getParticipantPartPlaceholder(g.id, p.id)"
+                            :value="getParticipantPartSetting(g.id, p.id)"
+                            @keyup="updatePartSetting($event, g.id, p.id)"
+                        >
+                        <small>{{ getParticipantGroupAmount(p.id, g.id) | CHF }}</small>
+                    </td>
+                </template>
                 <td>{{ expensesSum(p.id, null) | CHF }}</td>
-                <td>{{ getParticipantPart(p.id) | CHF }}</td>
+                <td>{{ getParticipantTotalAmount(p.id) | CHF }}</td>
                 <td>{{ getParticipantBalance(p.id) | CHF }}
                 </td>
             </tr>
             <tr>
                 <th>Total per group</th>
-                <th v-for="g in groups">{{ expensesSum(null, g.id) | CHF }}</th>
-                <th>{{ expensesGrandTotal | CHF }}</th>
-                <th>{{ sumParts | CHF }}</th>
+                <template v-for="g in groups">
+                    <th>{{ expensesSum(null, g.id) | CHF }}</th>
+                    <th v-if="g.partial"></th>
+                </template>
+                <th>{{ expensesTotal | CHF }}</th>
+                <th>{{ getTotalAmount | CHF }}</th>
                 <th>{{ sumBalances | CHF }} CHF</th>
             </tr>
         </table>
@@ -48,17 +63,20 @@
     data: function () {
       return {
         newParticipantName: '',
-        newGroupName: ''
+        newGroupName: '',
+        partSettings: []
       }
     },
     computed: {
       ...mapGetters({
         expensesSum: 'expensesSum',
-        getParticipantPart: 'getParticipantPart',
+        getParticipantGroupAmount: 'getParticipantGroupAmount',
+        getParticipantTotalAmount: 'getParticipantTotalAmount',
+        getParticipantPartSetting: 'getParticipantPartSetting',
         getParticipantBalance: 'getParticipantBalance',
-        expensesGrandTotal: 'expensesGrandTotal',
-        sumParts: 'sumParts',
-        sumBalances: 'sumBalances'
+        expensesTotal: 'expensesTotal',
+        getTotalAmount: 'getTotalAmount',
+        sumBalances: 'sumBalances',
       }),
       ...mapState(['groups', 'participants']),
     },
@@ -81,6 +99,16 @@
       removeGroup(position) {
         this.$store.dispatch('removeGroup', position);
       },
+      togglePartialGroup(id) {
+        this.$store.dispatch('togglePartialGroup', id);
+      },
+      updatePartSetting(event, gId, pId) {
+        let val = event.target.value;
+        this.$store.dispatch('updatePartSetting', {gId, pId, val});
+      },
+      getParticipantPartPlaceholder(gId) {
+        return Object.keys(this.groups[gId].parts).length === 0 ? '% or unit' : 1
+      }
     },
   }
 </script>
@@ -88,5 +116,8 @@
 <style scoped>
     td, th {
         border: 1px solid lightgrey;
+    }
+    .partial-input {
+        width: 70px;
     }
 </style>
