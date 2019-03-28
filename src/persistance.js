@@ -25,9 +25,9 @@ export function decodeURIAnswersParam(queryString){
  * Populate a state with a queryString parameter
  */
 export function mergeDefaultAndQS(defaultData, queryString){
-  const {version, data} = decodeURIAnswersParam(queryString);
+  let {version, data} = decodeURIAnswersParam(queryString);
   if (defaultData.version !== version){
-    throw 'Invalid version';
+    data = migrate(data, version, defaultData.version)
   }
   return {...defaultData, ...data};
 }
@@ -42,4 +42,18 @@ export function getQueryStringParams() {
     params[key] = value;
   }
   return params;
+}
+
+/**
+ * Allow to migrate an old data structure
+ */
+function migrate (data, from, to) {
+  if (from <= 0.1) {
+    console.log(`Migrate from ${from} to ${to} because groups have now a partial property and a parts list`);
+    Object.keys(data.groups).map(function(key) {
+      data.groups[key].partial = false;
+      data.groups[key].parts = {};
+    });
+  }
+  return data;
 }

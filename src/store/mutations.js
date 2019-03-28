@@ -22,7 +22,7 @@ const mutations = {
 
   addGroup(state, name) {
     const newId = nextId(state.groups);
-    Vue.set(state.groups, newId, {id: newId, name: name});
+    Vue.set(state.groups, newId, {id: newId, name: name, partial: false, parts: {}});
   },
   removeGroup(state, id) {
     Object.values(state.expenses).forEach(function (e) {
@@ -32,7 +32,17 @@ const mutations = {
     });
     Vue.delete(state.groups, id);
   },
-
+  togglePartialGroup(state, id) {
+    state.groups[id].partial = !state.groups[id].partial;
+  },
+  updatePartSetting(state, {gId, pId, val}) {
+    if (val === "") {
+      Vue.delete(state.groups[gId].parts, pId);
+    }
+    else {
+      Vue.set(state.groups[gId].parts, pId, val);
+    }
+  },
 
   addExpense(state, params) {
     const newId = nextId(state.expenses);

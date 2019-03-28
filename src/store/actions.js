@@ -22,6 +22,12 @@ const actions = {
   removeGroup(context, id) {
     context.commit('removeGroup', id);
   },
+  togglePartialGroup(context, id) {
+    context.commit('togglePartialGroup', id);
+  },
+  updatePartSetting(context, gId, pId, val) {
+    context.commit('updatePartSetting', gId, pId, val);
+  },
 
   addExpense(context, params) {
     context.commit('addExpense', params);

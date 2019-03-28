@@ -9,7 +9,7 @@ import {getQueryStringParams, mergeDefaultAndQS} from '../../src/persistance';
 Vue.use(Vuex);
 
 let initialState = {
-  version: 0.1,
+  version: 0.2,
   queryString: null,
   participants: {},
   groups: {},
