@@ -49,11 +49,13 @@ export function getQueryStringParams() {
  */
 function migrate (data, from, to) {
   if (from <= 0.1) {
+    // eslint-disable-next-line no-console
     console.log(`Migrate from ${from} to ${to} because groups have now a partial property and a parts list`);
     Object.keys(data.groups).map(function(key) {
       data.groups[key].partial = false;
       data.groups[key].parts = {};
     });
+    data.version = 0.2;
   }
   return data;
 }
